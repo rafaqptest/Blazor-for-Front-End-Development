@@ -1,0 +1,8 @@
+<Router AppAssembly="@typeof(Program).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="routeData" DefaultLayout="MainLayout" />
+    </Found>
+    <NotFound>
+        <p>Sorry, there's nothing at this address. Please check the URL or go back to the <NavLink href="/">home page</NavLink>.</p>
+    </NotFound>
+</Router>

@@ -1,0 +1,30 @@
+@page "/eventdetails/{EventId:int}"
+
+<div class="event-details">
+    <h2>@Event?.Name</h2>
+    <p>Date: @Event?.Date.ToString("MMMM dd, yyyy")</p>
+    <p>Location: @Event?.Location</p>
+    <button @onclick="NavigateToRegister">Register</button>
+</div>
+
+@code {
+    [Parameter] public int EventId { get; set; }
+    private EventModel Event { get; set; }
+
+    protected override void OnInitialized()
+    {
+        // For demo purposes, hard-coded event data
+        var events = new List<EventModel>
+        {
+            new EventModel { Name = "Sample Event 1", Date = DateTime.Now, Location = "Barcelona" },
+            new EventModel { Name = "Sample Event 2", Date = DateTime.Now.AddDays(1), Location = "Madrid" }
+        };
+
+        Event = events.FirstOrDefault(e => e.Id == EventId);
+    }
+
+    private void NavigateToRegister()
+    {
+        NavigationManager.NavigateTo($"/register/{EventId}");
+    }
+}

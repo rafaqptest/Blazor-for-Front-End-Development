@@ -1,0 +1,14 @@
+.event-card {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.event-card h2 {
+    margin-top: 0;
+}
+
+.event-card p {
+    margin: 5px 0;
+}

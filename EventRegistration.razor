@@ -1,0 +1,56 @@
+@page "/register/{EventId:int}"
+
+<EditForm Model="@Registration" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label for="name">Name</label>
+        <InputText id="name" @bind-Value="Registration.Name" />
+        <ValidationMessage For="@(() => Registration.Name)" />
+    </div>
+
+    <div>
+        <label for="email">Email</label>
+        <InputText id="email" @bind-Value="Registration.Email" />
+        <ValidationMessage For="@(() => Registration.Email)" />
+    </div>
+
+    <button type="submit">Register</button>
+</EditForm>
+
+@code {
+    [Parameter] public int EventId { get; set; }
+    private EventModel Event { get; set; }
+    private RegistrationModel Registration { get; set; } = new RegistrationModel();
+
+    protected override void OnInitialized()
+    {
+        // For demo purposes, hard-coded event data
+        var events = new List<EventModel>
+        {
+            new EventModel { Id = 1, Name = "Sample Event 1", Date = DateTime.Now, Location = "Barcelona" },
+            new EventModel { Id = 2, Name = "Sample Event 2", Date = DateTime.Now.AddDays(1), Location = "Madrid" }
+        };
+
+        Event = events.FirstOrDefault(e => e.Id == EventId);
+    }
+
+    private void HandleValidSubmit()
+    {
+        // Handle valid form submission
+        Console.WriteLine($"User {Registration.Name} registered with email {Registration.Email} for event {Event.Name}");
+    }
+}
+
+@inject AttendanceService AttendanceService
+
+private void HandleValidSubmit()
+{
+    UserSession.UserName = Registration.Name;
+    UserSession.UserEmail = Registration.Email;
+
+    AttendanceService.RegisterAttendance(Event.Id, UserSession.UserId, UserSession.UserName, UserSession.UserEmail);
+    
+    Console.WriteLine($"User {Registration.Name} registered with email {Registration.Email} for event {Event.Name}");
+}

@@ -1,0 +1,26 @@
+@typeparam T
+
+<div class="event-card" @if="IsValid">
+    <h2>@Event.Name</h2>
+    <p>Date: @Event.Date.ToString("MMMM dd, yyyy")</p>
+    <p>Location: @Event.Location</p>
+    <button @onclick="NavigateToDetails">View Details</button>
+</div>
+
+@if (!IsValid)
+{
+    <p>Invalid event data.</p>
+}
+
+@code {
+    [Parameter] public EventModel Event { get; set; }
+
+    private bool IsValid => !string.IsNullOrEmpty(Event.Name) &&
+                            Event.Date >= DateTime.Today &&
+                            !string.IsNullOrEmpty(Event.Location);
+
+    private void NavigateToDetails()
+    {
+        NavigationManager.NavigateTo($"/eventdetails/{Event.Id}");
+    }
+}
